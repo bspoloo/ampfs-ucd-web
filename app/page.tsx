@@ -9,6 +9,7 @@ import {
   Zap, BarChart3, Layers, X, Menu,
 } from "lucide-react";
 import dynamic from "next/dynamic";
+import { IntroAnimation } from "./components/home/intro-animation";
 import { useSession } from "next-auth/react";
 import { MenuHome } from "./classes/menu-home";
 import { NEWS, STEPS } from "./consts/menu-home";
@@ -54,6 +55,7 @@ function useRevealObserver() {
 export default function Home() {
   useRevealObserver();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [introComplete, setIntroComplete] = useState(false);
   const { data: session, status } = useSession();
   const [menuHome, setMuenuHome] = useState<MenuHome | null>(null);
 
@@ -62,13 +64,17 @@ export default function Home() {
   }, [session]);
 
   return (
+    <>
+      {!introComplete && (
+        <IntroAnimation onDone={() => setIntroComplete(true)} />
+      )}
     <div className="bg-[#0e0e0e] text-white dot-grid">
 
       {/* ── HERO ───────────────────────────────────────── */}
       <section className="relative min-h-screen w-full overflow-hidden">
         {/* Foto de fondo */}
         <Image
-          src="/fondo_home.webp"
+          src="/fondoHome.png"
           alt="Frontón"
           fill
           className="object-cover object-center"
@@ -517,5 +523,6 @@ export default function Home() {
       </footer>
 
     </div>
+    </>
   );
 }
