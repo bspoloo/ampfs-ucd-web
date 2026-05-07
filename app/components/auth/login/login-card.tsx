@@ -1,13 +1,11 @@
 "use client"
 
 import { useRouter } from 'next/navigation';
-import React, { useState, useEffect } from "react";
-import { useLogin } from '@/app/hooks/use-login';
+import React, { useState } from "react";
 import { validateEmail } from '@/app/functions/validate-email';
-import Image from 'next/image';
 import { Eye, EyeOff } from 'lucide-react';
 import ButtonLogin from '../button-login/button-login';
-import { signIn, SignInResponse } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 
 export default function LoginCard() {
@@ -16,9 +14,7 @@ export default function LoginCard() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    // const [shouldLogin, setShouldLogin] = useState(false);
     const [validationError, setValidationError] = useState('');
-    // const [response, setResponse] = useState<SignInResponse | undefined>(undefined);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -52,7 +48,7 @@ export default function LoginCard() {
                 return;
             }
             if (response?.ok && response.status === 200) {
-                router.push('/');
+                router.push('/dashboard');
                 router.refresh(); 
             }
 
@@ -73,8 +69,6 @@ export default function LoginCard() {
                 boxShadow: '0 8px 32px rgba(0, 0, 0, 0.35)',
             }}
         >
-
-
 
             {/* TÍTULO */}
             <h2 className="text-2xl font-bold text-white self-center">Iniciar sesión</h2>

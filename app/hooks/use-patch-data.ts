@@ -1,23 +1,34 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getData } from "../services/get.data.service";
-import { DataServer } from "../interfaces/data-response-list";
 import { patchData } from "../services/patch.data.service";
 
-export function usePatchData<T, O>(endpoint: string, body: T): DataServer<O> {
-    const [data, setData] = useState<O | null>(null); //data returned by server backend
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string>();
-    
-    useEffect(()=> {
-        patchData<T, O>(endpoint, body)
-            .then(data => setData(data))
-            .catch((err)=> {
-                setError(err.message ?? "Error en traer la lista de datos")
-            })
-            .finally(()=> setLoading(false));
-    }, [body]);
-    
+export function usePatchData<T, O>(endpoint: string, body: T, isUpdating: boolean) {
+    const [data, setData] = useState<O | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (isUpdating && body) {
+            setLoading(true);
+            setError(null);
+
+            patchData<T, O>(endpoint, body)
+                .then(responseData => {
+                    setData(responseData);
+                })
+                .catch((err) => {
+                    setError(err.message ?? "Error al actualizar los datos");
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        } else {
+            if (!isUpdating) {
+                setData(null);
+            }
+        }
+    }, [isUpdating, endpoint]);
+
     return { data, loading, error };
 }
