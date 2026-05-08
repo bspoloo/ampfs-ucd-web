@@ -16,7 +16,6 @@ export class SyncUserRequestService {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                //to register
                 body: BodyRequest.EntityToBody<RegisterInterface>({
                     fullname: profile?.name!,
                     username: profile.email?.split("@")[0]!,
@@ -46,14 +45,12 @@ export class SyncUserRequestService {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                //to register
                 body: BodyRequest.EntityToBody<CredentialsInterface>({
                     email: credentials.email,
                     password: credentials.password
                 }),
             })
             if (res.status === 404) {
-                // Usuario no encontrado
                 return null;
             }
 
@@ -75,7 +72,6 @@ export class SyncUserRequestService {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                //to register
                 body: BodyRequest.EntityToBody<RequestEmail>({
                     email: profile.email!
                 }),
