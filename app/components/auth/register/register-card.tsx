@@ -149,7 +149,7 @@ export default function RegisterCard() {
             </div>
 
             {/* GOOGLE BUTTON */}
-            <ButtonLogin actionType='register'/>
+            <ButtonLogin actionType='login'/>
 
             {/* LOGIN LINK */}
             <p className="text-xs text-white/50 text-center">
