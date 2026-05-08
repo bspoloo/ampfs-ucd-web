@@ -5,7 +5,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Environment } from "@react-three/drei";
 import * as THREE from "three";
 
-const MODEL_PATH = "/tennis%20racket%203d%20model.glb";
+const MODEL_PATH = "/RaquetModel.glb";
 
 function easeOutExpo(t: number): number {
   return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
