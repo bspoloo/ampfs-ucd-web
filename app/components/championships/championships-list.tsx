@@ -1,22 +1,37 @@
 "use client";
 
+import { Championship } from "@/app/interfaces/championship.interface";
 import ChampionshipCard from "./championship-card";
-import { userChampionships } from "@/app/hooks/use-championships";
+import { useGetData as useData } from "@/app/hooks/use-get-data";
+import Loader from "@/app/components/loader";
+import { useEffect, useState } from "react";
+import Toast from "@/app/components/ui/toast";
 
 export default function ChampionshipsList() {
-    const { data, loading } = userChampionships();
-
+    const { data, loading, error } = useData<Championship[]>("championship");
+    const [load, setLoad] = useState<boolean>(false);
+    const [toast, setToast] = useState<{
+        message: string;
+        type: "success" | "error";
+    } | null>(null);
+    useEffect(() => {
+        setLoad(loading);
+    });
     if (loading) {
-        return <p className="text-white mt-6">Cargando campeonatos...</p>;
+        return <Loader></Loader>;
+    }
+    if (error) {
+        setLoad(true);
+        { toast && <Toast message={toast.message} type={toast.type} /> }
     }
     return (
         <div className="mt-6 overflow-x-auto custom-scroll">
             <div className="flex gap-6 w-max pb-2">
 
-                {data.map((championship) => (
+                {data?.map((championship) => (
                     <div
                         key={championship.id}
-                        className="min-w-[300px] max-w-[300px] flex-shrink-0:"
+                        className="min-w-75 max-w-75 flex-shrink-0:"
                     >
                         <ChampionshipCard championship={championship} />
                     </div>

@@ -1,140 +1,54 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import Categories from "@/app/components/championships/categories";
 import Toast from "@/app/components/ui/toast";
 import ConfirmModal from "@/app/components/ui/confirm-modal";
-
-type StatusFront = "activo" | "proceso" | "finalizado";
-
-type Championship = {
-    id: string;
-    name: string;
-    state: "ACTIVE" | "IN_PROGRESS" | "FINISHED";
-};
+import Loader from "@/app/components/loader";
+import { getStatusStyles } from "@/app/functions/get-status-styles";
+import { StatusFront } from "@/app/consts/champion-state";
+import { useChampionshipDetail } from "@/app/hooks/championships/use-championship-detail";
 
 export default function ChampionshipDetail() {
+
     const params = useParams();
     const id = params.id as string;
 
-    const [toast, setToast] = useState<{
-        message: string;
-        type: "success" | "error";
-    } | null>(null);
+    const {
+        championship,
+        loading,
+        error,
+        status,
+        toast,
+        isModalOpen,
+        pendingStatus,
+        handleChange,
+        confirmChange,
+        closeModal
+    } = useChampionshipDetail(id);
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [pendingStatus, setPendingStatus] = useState<StatusFront | null>(null);
+    if (loading) return <Loader />;
 
-    const [championship, setChampionship] = useState<Championship | null>(null);
-    const [status, setStatus] = useState<StatusFront>("activo");
+    if (error) {
+        return (
+            <div className="p-6 text-center text-white font-bold">
+                Error de conexión con el servidor
+            </div>
+        );
+    }
 
-    const stateMap: Record<StatusFront, Championship["state"]> = {
-        activo: "ACTIVE",
-        proceso: "IN_PROGRESS",
-        finalizado: "FINISHED",
-    };
-
-    const reverseStateMap: Record<Championship["state"], StatusFront> = {
-        ACTIVE: "activo",
-        IN_PROGRESS: "proceso",
-        FINISHED: "finalizado",
-    };
-
-    const getStatusStyles = (state: StatusFront) => {
-        switch (state) {
-            case "activo":
-                return "bg-green-900 border-green-500 text-green-400";
-            case "proceso":
-                return "bg-yellow-900 border-yellow-500 text-yellow-400";
-            case "finalizado":
-                return "bg-red-900 border-red-500 text-red-400";
-            default:
-                return "bg-gray-800 border-gray-500 text-gray-300";
-        }
-    };
-
-    const handleChange = (value: StatusFront) => {
-        if (value === status) return;
-        setPendingStatus(value);
-        setIsModalOpen(true);
-    };
-
-    const confirmChange = async () => {
-        if (!pendingStatus) return;
-
-        const prev = status;
-        setStatus(pendingStatus);
-        setIsModalOpen(false);
-
-        try {
-            const res = await fetch(`http://localhost:5000/api/v1/championship/${id}/state`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ state: stateMap[pendingStatus] }),
-            });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                // throw new Error(data.message || "Error al actualizar");
-                setToast({
-                    message: data.message || "Error al actualizar",
-                    type: "error",
-                });
-                setStatus(prev);
-                setTimeout(() => setToast(null), 3000);
-                return;
-            }
-
-            setToast({
-                message: "Estado actualizado correctamente",
-                type: "success",
-            });
-
-        } catch (error: any) {
-            console.error(error);
-            setStatus(prev);
-
-            setToast({
-                message: error.message || "Error al actualizar",
-                type: "error",
-            });
-        }
-
-        setTimeout(() => setToast(null), 3000);
-    };
-
-    const cancelChange = () => {
-        setIsModalOpen(false);
-        setPendingStatus(null);
-    };
-
-    useEffect(() => {
-        fetch(`http://localhost:5000/api/v1/championship/${id}`)
-            .then(res => res.json())
-            .then((data: Championship) => {
-                setChampionship(data);
-                setStatus(reverseStateMap[data.state]);
-            })
-            .catch(err => console.error(err));
-    }, [id]);
-
-    if (!championship) return <p>Cargando...</p>;
+    if (!championship) return null;
 
     return (
         <div className="text-white -m-6">
             <div className="relative w-full h-40 sm:h-52 md:h-64 overflow-hidden">
-
                 <img
                     src="/championship_detail.webp"
                     className="w-full h-full object-cover"
+                    alt="Banner"
                 />
 
                 <div className="absolute inset-0 bg-black/60" />
-
                 <div className="absolute top-6 left-0 w-full px-4 sm:px-6">
                     <h2 className="text-xl font-semibold text-(--text-sidebar)">
                         {championship.name}
@@ -142,29 +56,47 @@ export default function ChampionshipDetail() {
                 </div>
 
                 <div className="absolute bottom-4 right-4">
-                    <select
-                        value={status}
-                        onChange={(e) => handleChange(e.target.value as StatusFront)}
-                        className={`px-4 py-2 rounded-md text-sm outline-none cursor-pointer border bg-(--bg-sidebar) ${getStatusStyles(status)}`}
-                    >
-                        <option value="activo">Activo</option>
-                        <option value="proceso">En proceso</option>
-                        <option value="finalizado">Finalizado</option>
-                    </select>
-                </div>
+                    {status && (
+                        <select
+                            value={status}
+                            onChange={(e) =>
+                                handleChange(
+                                    e.target.value as StatusFront
+                                )
+                            }
+                            className={`px-4 py-2 rounded-md text-sm outline-none cursor-pointer border bg-(--bg-sidebar) transition-all duration-300 ${getStatusStyles(status)}`}
+                        >
+                            <option value="proceso">
+                                En proceso
+                            </option>
 
+                            <option value="activo">
+                                Activo
+                            </option>
+
+                            <option value="finalizado">
+                                Finalizado
+                            </option>
+                        </select>
+                    )}
+                </div>
             </div>
 
             <Categories />
 
-            {toast && <Toast message={toast.message} type={toast.type} />}
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                />
+            )}
 
             <ConfirmModal
                 isOpen={isModalOpen}
-                title="Confirmar cambio de estado"
-                message="¿Estás seguro de que deseas cambiar el estado del campeonato?"
+                title="Cambiar Estado"
+                message={`¿Estás seguro de cambiar a ${pendingStatus}?`}
                 onConfirm={confirmChange}
-                onCancel={cancelChange}
+                onCancel={closeModal}
             />
         </div>
     );
