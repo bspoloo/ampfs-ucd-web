@@ -5,6 +5,7 @@ import { JWT } from "next-auth/jwt"
 import { SyncUserRequestService } from "@/app/services/auth.service";
 import { RequestRegister } from "@/app/classes/request-register.class";
 import { cookies } from "next/headers";
+import { ACTIONS } from "@/app/enums/actions.enum";
 
 declare module "next-auth" {
     export interface Session {
@@ -92,25 +93,28 @@ const handler = NextAuth({
     },
     callbacks: {
         async signIn({ user, account, profile }) {
-            let action = "login";
+            let action : ACTIONS = ACTIONS.LOGIN;
+            let userResponse = null;
 
             if (account?.provider === "google") {
                 const cookieStore = await cookies();
                 const actionCookie = cookieStore.get("auth_action");
 
                 if (actionCookie?.value) {
-                    action = actionCookie.value;
+                    action = actionCookie.value as ACTIONS;
                 }
                 if (profile?.email) {
                     try {
-                        const userResponse = await RequestRegister.getActionRegister(action!, profile);
+                        userResponse = await RequestRegister.getActionRegister(action!, profile);
                         console.log(userResponse);
-                        
+
                         if (!userResponse || !userResponse.user) {
-                            throw new Error("USER_NOT_REGISTERED");
+                            console.log(`Correo no existente ${profile} creando cuenta`);
+        
+                            userResponse = await RequestRegister.getActionRegister(ACTIONS.REGISTER, profile);
                         }
 
-                        return true;
+                        return userResponse ? true : false;
                     } catch (error: any) {
                         if (error.message?.startsWith('/register')) {
                             throw new Error(error.message);

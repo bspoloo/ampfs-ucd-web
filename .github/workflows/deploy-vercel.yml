@@ -2,7 +2,7 @@ name: CI/CD Pipeline to Vercel Web App
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
     branches:
       - main
