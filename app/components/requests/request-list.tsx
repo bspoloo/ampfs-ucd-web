@@ -4,6 +4,8 @@ import { useState } from "react"
 import { RefreshCcw } from "lucide-react"
 import { Solicitud } from "@/app/interfaces/solicitud.interface"
 import RequestDetailModal from "./request-detail-modal"
+import Toast from "@/app/components/ui/toast"
+import { useToast } from "@/app/hooks/use-toast"
 
 const SOLICITUDES_MOCK: Solicitud[] = [
     {
@@ -56,23 +58,35 @@ const ESTADO_STYLES: Record<string, string> = {
 export default function RequestsList() {
     const [solicitudes, setSolicitudes] = useState<Solicitud[]>(SOLICITUDES_MOCK)
     const [selected, setSelected] = useState<Solicitud | null>(null)
+    const { toast, showToast } = useToast()
 
     const handleAceptar = (id: string) => {
-        setSolicitudes(prev =>
-            prev.map(s => s.id === id ? { ...s, estado: "Aceptada" } : s)
-        )
-        setSelected(prev => prev?.id === id ? { ...prev, estado: "Aceptada" } : prev)
+        try {
+            setSolicitudes(prev =>
+                prev.map(s => s.id === id ? { ...s, estado: "Aceptada" } : s)
+            )
+            setSelected(prev => prev?.id === id ? { ...prev, estado: "Aceptada" } : prev)
+            showToast("Solicitud aceptada correctamente.", "success")
+        } catch {
+            showToast("Ocurrió un error al aceptar la solicitud.", "error")
+        }
     }
 
     const handleRechazar = (id: string) => {
-        setSolicitudes(prev =>
-            prev.map(s => s.id === id ? { ...s, estado: "Rechazada" } : s)
-        )
-        setSelected(prev => prev?.id === id ? { ...prev, estado: "Rechazada" } : prev)
+        try {
+            setSolicitudes(prev =>
+                prev.map(s => s.id === id ? { ...s, estado: "Rechazada" } : s)
+            )
+            setSelected(prev => prev?.id === id ? { ...prev, estado: "Rechazada" } : prev)
+            showToast("Solicitud rechazada.", "success")
+        } catch {
+            showToast("Ocurrió un error al rechazar la solicitud.", "error")
+        }
     }
 
     return (
         <>
+            {toast.visible && <Toast message={toast.message} type={toast.type} />}
             <div className="flex-1 overflow-y-auto custom-scroll rounded border border-(--border-dark) mt-5">
                 <table className="w-full text-sm">
                     <thead className="bg-(--bg-main) sticky top-0 z-10">
