@@ -7,24 +7,18 @@ import RequestDetailModal from "./request-detail-modal";
 import { Permit } from "@/app/interfaces/permit.interface";
 import { usePermits } from "@/app/hooks/permits/use-permits";
 import { getPermitStatusStyles } from "@/app/functions/get-permit-status-style";
+import Toast from "@/app/components/ui/toast"
+import { useToast } from "@/app/hooks/use-toast";
 
 export default function RequestsList() {
-    const {
-        permits,
-        loading,
-        error,
-        updatePermitStatus
-    } = usePermits();
+    const { permits, loading, error, updatePermitStatus } = usePermits();
+    const { toast, showToast } = useToast()
 
-    const [selected, setSelected] =
-        useState<Permit | null>(null);
+    const [selected, setSelected] = useState<Permit | null>(null);
 
     async function handleApprove(id: string) {
 
-        await updatePermitStatus(
-            id,
-            "aprobado"
-        );
+        await updatePermitStatus(id, "aprobado");
 
         setSelected(prev =>
             prev
@@ -37,10 +31,7 @@ export default function RequestsList() {
     }
 
     async function handleReject(id: string) {
-        await updatePermitStatus(
-            id,
-            "rechazado"
-        );
+        await updatePermitStatus(id, "rechazado");
 
         setSelected(prev =>
             prev
@@ -69,6 +60,7 @@ export default function RequestsList() {
 
     return (
         <>
+            {toast.visible && <Toast message={toast.message} type={toast.type} />}
             <div className="flex-1 overflow-y-auto custom-scroll rounded border border-(--border-dark) mt-5">
                 <table className="w-full text-sm">
 
