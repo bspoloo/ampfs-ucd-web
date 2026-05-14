@@ -109,8 +109,6 @@ const handler = NextAuth({
                         console.log(userResponse);
 
                         if (!userResponse || !userResponse.user) {
-                            console.log(`Correo no existente ${profile} creando cuenta`);
-        
                             userResponse = await RequestRegister.getActionRegister(ACTIONS.REGISTER, profile);
                         }
 
