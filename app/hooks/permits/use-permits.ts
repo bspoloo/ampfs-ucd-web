@@ -1,7 +1,5 @@
 "use client";
 
-console.log("HOOK USE PERMITS CARGADO");
-
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
@@ -27,6 +25,9 @@ export function usePermits() {
         status
     } = useSession();
 
+    console.log( session?.accessToken);
+    
+
     const [permits, setPermits] =
         useState<Permit[]>([]);
 
@@ -41,8 +42,6 @@ export function usePermits() {
         if (status === "loading") {
             return;
         }
-        console.log("SESSION:");
-        console.log("the session is" + session?.accessToken);
         if (!session?.accessToken) {
             setLoading(false);
             return;
@@ -59,18 +58,10 @@ export function usePermits() {
             setLoading(true);
             setError(null);
 
-            console.log(
-                "TOKEN:",
-                session?.accessToken
-            );
-
             const data: PermitResponse[] =
                 await getPermits(
                     session!.accessToken
                 );
-
-            console.log("DATA:");
-            console.log(data);
 
             const formattedPermits: Permit[] =
                 data.map(permit => ({

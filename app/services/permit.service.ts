@@ -14,7 +14,7 @@ export async function getPermits(
 ): Promise<PermitResponse[]> {
 
     const response = await fetch(
-        `${API_URL}/solicitudes`,
+        `${API_URL}/permits`,
         {
             method: "GET",
             headers: {
@@ -49,7 +49,7 @@ export async function reviewPermit(
     };
 
     const response = await fetch(
-        `${API_URL}/solicitudes/${id}/review`,
+        `${API_URL}/permits/${id}/review`,
         {
             method: "PATCH",
             headers: {

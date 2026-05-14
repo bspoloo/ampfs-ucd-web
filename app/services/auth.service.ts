@@ -29,9 +29,6 @@ export class SyncUserRequestService {
                 }),
             })
             const userInfo: SyncUserResponse = await res.json();
-
-            console.log(userInfo);
-            
             return userInfo;
         } catch (err) {
             throw new Error("Error syncing user: " + err);

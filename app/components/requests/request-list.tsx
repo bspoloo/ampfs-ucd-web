@@ -37,7 +37,6 @@ export default function RequestsList() {
     }
 
     async function handleReject(id: string) {
-
         await updatePermitStatus(
             id,
             "rechazado"
@@ -78,42 +77,32 @@ export default function RequestsList() {
                             <th className="p-3 text-left">
                                 Equipo
                             </th>
-
                             <th className="p-3 text-left">
                                 Tipo
                             </th>
-
                             <th className="p-3 text-left">
                                 Estado
                             </th>
-
                             <th className="p-3 text-left">
                                 Motivo
                             </th>
-
                             <th className="p-3 text-center">
                                 <RefreshCcw className="w-4 h-4 mx-auto" />
                             </th>
                         </tr>
                     </thead>
-
                     <tbody>
-
                         {permits.map(permit => (
-
                             <tr
                                 key={permit.id}
                                 className="border-t border-(--border-dark) hover:bg-(--hover-btn-sidebar) transition"
                             >
-
                                 <td className="p-3 text-(--text-sidebar) font-medium whitespace-nowrap">
                                     {permit.equipo.nombre ?? "sin equipo"}
                                 </td>
-
                                 <td className="p-3 text-(--text-btn-sidebar) whitespace-nowrap">
                                     {permit.tipo}
                                 </td>
-
                                 <td
                                     className={`p-3 whitespace-nowrap font-semibold ${getPermitStatusStyles(
                                         permit.estado
@@ -121,13 +110,10 @@ export default function RequestsList() {
                                 >
                                     {permit.estado}
                                 </td>
-
                                 <td className="p-3 text-(--text-btn-sidebar) max-w-xs truncate">
                                     {permit.motivo}
                                 </td>
-
                                 <td className="p-3 text-center">
-
                                     <button
                                         onClick={() =>
                                             setSelected(
@@ -138,15 +124,10 @@ export default function RequestsList() {
                                     >
                                         Ver solicitud
                                     </button>
-
                                 </td>
-
                             </tr>
-
                         ))}
-
                     </tbody>
-
                 </table>
             </div>
 

@@ -4,24 +4,24 @@ export type PermitStatusFront =
     | "rechazado";
 
 export type PermitStatusBackend =
-    | "PENDIENTE"
-    | "APROBADO"
-    | "RECHAZADO";
+    | "PENDING"
+    | "APPROVED"
+    | "REJECTED";
 
 export const permitStateMap: Record<
     PermitStatusFront,
     PermitStatusBackend
 > = {
-    pendiente: "PENDIENTE",
-    aprobado: "APROBADO",
-    rechazado: "RECHAZADO",
+    pendiente: "PENDING",
+    aprobado: "APPROVED",
+    rechazado: "REJECTED",
 };
 
 export const reversePermitStateMap: Record<
     PermitStatusBackend,
     PermitStatusFront
 > = {
-    PENDIENTE: "pendiente",
-    APROBADO: "aprobado",
-    RECHAZADO: "rechazado",
+    PENDING: "pendiente",
+    APPROVED: "aprobado",
+    REJECTED: "rechazado",
 };
