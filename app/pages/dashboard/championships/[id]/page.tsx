@@ -22,12 +22,15 @@ export default function ChampionshipDetail() {
         toast,
         isModalOpen,
         pendingStatus,
+        isUpdating,
         handleChange,
         confirmChange,
         closeModal
     } = useChampionshipDetail(id);
 
-    if (loading) return <Loader />;
+    if (loading || isUpdating) {
+        return <Loader />;
+    }
 
     if (error) {
         return (
