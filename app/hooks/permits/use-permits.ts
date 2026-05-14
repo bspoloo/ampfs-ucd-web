@@ -66,15 +66,15 @@ export function usePermits() {
             const formattedPermits: Permit[] =
                 data.map(permit => ({
                     id: permit.id,
-                    tipo: permit.tipo,
-                    motivo: permit.motivo,
+                    type: permit.type,
+                    reason: permit.reason,
 
-                    fecha_solicitud:
-                        permit.fecha_solicitud,
+                    permit_date:
+                        permit.permit_date,
 
-                    estado:
+                    state:
                         reversePermitStateMap[
-                            permit.estado as PermitStatusBackend
+                            permit.state as PermitStatusBackend
                         ],
 
                     equipo: {
@@ -130,15 +130,15 @@ export function usePermits() {
 
             const formattedPermit: Permit = {
                 id: updatedPermit.id,
-                tipo: updatedPermit.tipo,
-                motivo: updatedPermit.motivo,
+                type: updatedPermit.type,
+                reason: updatedPermit.reason,
 
-                fecha_solicitud:
-                    updatedPermit.fecha_solicitud,
+                permit_date:
+                    updatedPermit.permit_date,
 
-                estado:
+                state:
                     reversePermitStateMap[
-                        updatedPermit.estado as PermitStatusBackend
+                        updatedPermit.state as PermitStatusBackend
                     ],
 
                 equipo: {

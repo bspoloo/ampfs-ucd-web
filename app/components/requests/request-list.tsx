@@ -93,17 +93,17 @@ export default function RequestsList() {
                                     {permit.equipo.nombre ?? "sin equipo"}
                                 </td>
                                 <td className="p-3 text-(--text-btn-sidebar) whitespace-nowrap">
-                                    {permit.tipo}
+                                    {permit.type}
                                 </td>
                                 <td
                                     className={`p-3 whitespace-nowrap font-semibold ${getPermitStatusStyles(
-                                        permit.estado
+                                        permit.state
                                     )}`}
                                 >
-                                    {permit.estado}
+                                    {permit.state}
                                 </td>
                                 <td className="p-3 text-(--text-btn-sidebar) max-w-xs truncate">
-                                    {permit.motivo}
+                                    {permit.reason}
                                 </td>
                                 <td className="p-3 text-center">
                                     <button
