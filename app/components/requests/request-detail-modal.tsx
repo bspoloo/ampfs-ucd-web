@@ -13,7 +13,7 @@ import {
 import { Permit } from "@/app/interfaces/permit.interface";
 
 interface RequestDetailModalProps {
-    solicitud: Permit | null;
+    permit: Permit | null;
 
     onClose: () => void;
 
@@ -42,20 +42,19 @@ const ESTADO_CONFIG = {
 };
 
 export default function RequestDetailModal({
-
-    solicitud,
+    permit,
     onClose,
     onAceptar,
     onRechazar
 
 }: RequestDetailModalProps) {
 
-    if (!solicitud) return null;
+    if (!permit) return null;
 
     const {
         color,
         icon: EstadoIcon
-    } = ESTADO_CONFIG[solicitud.estado];
+    } = ESTADO_CONFIG[permit.state];
 
     return (
 
@@ -98,7 +97,7 @@ export default function RequestDetailModal({
                             </p>
 
                             <p className="text-sm font-medium text-(--text-sidebar)">
-                                {solicitud.tipo}
+                                {permit.type}
                             </p>
                         </div>
 
@@ -116,7 +115,7 @@ export default function RequestDetailModal({
                             </p>
 
                             <p className="text-sm font-medium text-(--text-sidebar)">
-                                {solicitud.equipo.nombre}
+                                {permit.team.name}
                             </p>
 
                         </div>
@@ -136,7 +135,7 @@ export default function RequestDetailModal({
 
                             <p className="text-sm font-medium text-(--text-sidebar)">
                                 {new Date(
-                                    solicitud.fecha_solicitud
+                                    permit.permit_date
                                 ).toLocaleDateString()}
                             </p>
 
@@ -158,7 +157,7 @@ export default function RequestDetailModal({
                             </p>
 
                             <p className={`text-sm font-semibold ${color}`}>
-                                {solicitud.estado}
+                                {permit.state}
                             </p>
 
                         </div>
@@ -177,7 +176,7 @@ export default function RequestDetailModal({
                             </p>
 
                             <p className="text-sm text-(--text-sidebar) leading-relaxed">
-                                {solicitud.motivo}
+                                {permit.reason}
                             </p>
 
                         </div>
@@ -187,14 +186,14 @@ export default function RequestDetailModal({
                 </div>
 
                 {/* Footer */}
-                {solicitud.estado === "pendiente" && (
+                {permit.state === "pendiente" && (
 
                     <div className="px-6 py-4 border-t border-(--border-dark) flex justify-end gap-3">
 
                         <button
                             onClick={() =>
                                 onRechazar(
-                                    solicitud.id
+                                    permit.id
                                 )
                             }
                             className="px-5 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition cursor-pointer"
@@ -205,7 +204,7 @@ export default function RequestDetailModal({
                         <button
                             onClick={() =>
                                 onAceptar(
-                                    solicitud.id
+                                    permit.id
                                 )
                             }
                             className="px-5 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white text-sm font-medium transition cursor-pointer"

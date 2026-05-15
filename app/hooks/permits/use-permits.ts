@@ -25,17 +25,11 @@ export function usePermits() {
         status
     } = useSession();
 
-    console.log( session?.accessToken);
-    
+    const [permits, setPermits] = useState<Permit[]>([]);
 
-    const [permits, setPermits] =
-        useState<Permit[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    const [loading, setLoading] =
-        useState(true);
-
-    const [error, setError] =
-        useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
 
@@ -70,25 +64,19 @@ export function usePermits() {
                     reason: permit.reason,
 
                     permit_date:
-                        permit.permit_date,
+                        permit.preference_time,
 
                     state:
                         reversePermitStateMap[
                             permit.state as PermitStatusBackend
                         ],
 
-                    equipo: {
-                        id: permit.equipo.id,
-                        nombre:
-                            permit.equipo.nombre,
+                    team: {
+                        id: permit.team.id,
+                        name:
+                            permit.team.name,
                     }
                 }));
-
-            console.log(
-                "FORMATTED:",
-                formattedPermits
-            );
-
             setPermits(formattedPermits);
 
         } catch (err) {
@@ -134,17 +122,17 @@ export function usePermits() {
                 reason: updatedPermit.reason,
 
                 permit_date:
-                    updatedPermit.permit_date,
+                    updatedPermit.preference_time,
 
                 state:
                     reversePermitStateMap[
                         updatedPermit.state as PermitStatusBackend
                     ],
 
-                equipo: {
-                    id: updatedPermit.equipo.id,
-                    nombre:
-                        updatedPermit.equipo.nombre,
+                team: {
+                    id: updatedPermit.team.id,
+                    name:
+                        updatedPermit.team.name,
                 }
             };
 

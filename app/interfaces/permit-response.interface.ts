@@ -4,13 +4,12 @@ export interface PermitResponse {
     id: string;
     type: string;
     reason: string;
-
     state: PermitStatusBackend;
-
-    permit_date: string;
-
-    equipo: {
+    match_date: Date;
+    preference_time: string;
+    team: {
         id: string;
-        nombre: string;
+        name: string;
+        description: string;
     };
 }
