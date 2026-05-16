@@ -1,16 +1,19 @@
 @import "tailwindcss";
-
 body {
     background-color: #0e0e0e;
 }
 
+
 /* ── Dot-grid background ─────────────────────────────── */
+
 .dot-grid {
-    background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
     background-size: 36px 36px;
 }
 
+
 /* ── Glass card ──────────────────────────────────────── */
+
 .glass-card {
     background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(24px);
@@ -18,45 +21,49 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.08);
     transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
 }
+
 .glass-card:hover {
     background: rgba(255, 255, 255, 0.055);
     border-color: rgba(255, 255, 255, 0.14);
     transform: translateY(-4px);
 }
 
+
 /* ── Reveal system (entrada + salida) ────────────────── */
 
+
 /* Estado inicial: oculto abajo */
+
 [data-reveal] {
     opacity: 0;
     transform: translateY(44px);
-    transition:
-        opacity  0.75s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+
 /* Entrando al viewport → aparece */
+
 [data-reveal].is-entering {
     opacity: 1;
     transform: translateY(0);
 }
 
+
 /* Saliendo por arriba (scroll down) → sube y desaparece */
+
 [data-reveal].is-exiting-up {
     opacity: 0;
     transform: translateY(-32px);
-    transition:
-        opacity  0.45s cubic-bezier(0.4, 0, 1, 1),
-        transform 0.45s cubic-bezier(0.4, 0, 1, 1);
+    transition: opacity 0.45s cubic-bezier(0.4, 0, 1, 1), transform 0.45s cubic-bezier(0.4, 0, 1, 1);
 }
 
+
 /* Saliendo por abajo (scroll up) → vuelve abajo */
+
 [data-reveal].is-exiting-down {
     opacity: 0;
     transform: translateY(44px);
-    transition:
-        opacity  0.45s cubic-bezier(0.4, 0, 1, 1),
-        transform 0.45s cubic-bezier(0.4, 0, 1, 1);
+    transition: opacity 0.45s cubic-bezier(0.4, 0, 1, 1), transform 0.45s cubic-bezier(0.4, 0, 1, 1);
 }
 
 .dark {
@@ -68,7 +75,6 @@ body {
     --btn-normal-sidebar: #ffffff00;
     --hover-btn-sidebar: #1a1a1a;
     --text-btn-sidebar: #cccccc;
-
     --color-primary: #b11212;
     --color-secondary: #9c6666;
     --color-tertiary: #481214;
@@ -98,38 +104,69 @@ body {
 }
 
 @keyframes fade-in {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
+
 .animate-fade-in {
     animation: fade-in 0.3s ease-out;
 }
 
+
 /* ── Toast animations ────────────────────────────────── */
+
 @keyframes toast-in {
-    from { opacity: 0; transform: translateX(110%); }
-    to   { opacity: 1; transform: translateX(0); }
+    from {
+        opacity: 0;
+        transform: translateX(110%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
+
 @keyframes toast-out {
-    from { opacity: 1; transform: translateX(0); }
-    to   { opacity: 0; transform: translateX(110%); }
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(110%);
+    }
 }
+
 @keyframes toast-progress {
-    from { width: 100%; }
-    to   { width: 0%; }
+    from {
+        width: 100%;
+    }
+    to {
+        width: 0%;
+    }
 }
 
 .animate-toast-in {
     animation: toast-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
 .animate-toast-out {
     animation: toast-out 0.25s ease-in forwards;
 }
+
 .animate-toast-progress {
     animation: toast-progress var(--toast-duration, 3500ms) linear forwards;
 }
 
+
 /* Loaders */
+
 #loading-wrapper {
     backdrop-filter: blur(8px);
     background: rgba(0, 0, 0, 0.3);
@@ -151,9 +188,8 @@ body {
     height: 30px;
     margin: -7px 0 0 -45px;
     text-align: center;
-    font-family: 'PT Sans Narrow', sans-serif;
+    font-family: "PT Sans Narrow", sans-serif;
     font-size: 20px;
-
 }
 
 #loading-content {
@@ -164,13 +200,13 @@ body {
     width: 170px;
     height: 170px;
     margin: -85px 0 0 -85px;
-    border: 3px solid #F00;
+    border: 3px solid #f00;
 }
 
 #loading-content:after {
     content: "";
     position: absolute;
-    border: 3px solid #0F0;
+    border: 3px solid #0f0;
     left: 15px;
     right: 15px;
     top: 15px;
@@ -180,7 +216,7 @@ body {
 #loading-content:before {
     content: "";
     position: absolute;
-    border: 3px solid #00F;
+    border: 3px solid #00f;
     left: 5px;
     right: 5px;
     top: 5px;
@@ -226,7 +262,6 @@ body {
         -ms-transform: rotate(0deg);
         transform: rotate(0deg);
     }
-
     100% {
         -webkit-transform: rotate(360deg);
         -ms-transform: rotate(360deg);
@@ -240,10 +275,45 @@ body {
         -ms-transform: rotate(0deg);
         transform: rotate(0deg);
     }
-
     100% {
         -webkit-transform: rotate(360deg);
         -ms-transform: rotate(360deg);
         transform: rotate(360deg);
     }
+}
+
+
+/* meesage pop up */
+
+@keyframes popup-in {
+    0% {
+        opacity: 0;
+        transform: scale(0.6);
+    }
+    80% {
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes popup-out {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.6);
+    }
+}
+
+.animate-popup-in {
+    animation: popup-in 0.25s ease-out forwards;
+}
+
+.animate-popup-out {
+    animation: popup-out 0.2s ease-in forwards;
 }
