@@ -2,53 +2,12 @@
 
 import { X, CheckCircle, XCircle, AlertTriangle, Info } from "lucide-react"
 import type { CSSProperties } from "react"
-import type { Toast, ToastType } from "@/app/context/toast-context"
+import { ToastItemProps } from "@/app/props/toast-Item.props"
+import { CONFIG_TOAST } from "@/app/consts/config-toast"
 
-const CONFIG: Record<ToastType, {
-    icon: typeof CheckCircle
-    bg: string
-    border: string
-    text: string
-    progress: string
-}> = {
-    success: {
-        icon: CheckCircle,
-        bg: "bg-green-950/95",
-        border: "border-green-700",
-        text: "text-green-300",
-        progress: "bg-green-500",
-    },
-    error: {
-        icon: XCircle,
-        bg: "bg-red-950/95",
-        border: "border-red-700",
-        text: "text-red-300",
-        progress: "bg-red-500",
-    },
-    warning: {
-        icon: AlertTriangle,
-        bg: "bg-amber-950/95",
-        border: "border-amber-700",
-        text: "text-amber-300",
-        progress: "bg-amber-500",
-    },
-    info: {
-        icon: Info,
-        bg: "bg-blue-950/95",
-        border: "border-blue-700",
-        text: "text-blue-300",
-        progress: "bg-blue-500",
-    },
-}
-
-interface ToastItemProps {
-    toast: Toast
-    leaving: boolean
-    onDismiss: (id: string) => void
-}
 
 export default function ToastItem({ toast, leaving, onDismiss }: ToastItemProps) {
-    const { icon: Icon, bg, border, text, progress } = CONFIG[toast.type]
+    const { icon: Icon, bg, border, text, progress } = CONFIG_TOAST[toast.type]
 
     return (
         <div
