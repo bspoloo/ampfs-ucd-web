@@ -54,10 +54,6 @@ export default function RequestsList() {
             </div>
         );
     }
-
-    console.log("PERMITS:");
-    console.log(permits);
-
     return (
         <>
             {toast.visible && <Toast message={toast.message} type={toast.type} />}
@@ -90,20 +86,20 @@ export default function RequestsList() {
                                 className="border-t border-(--border-dark) hover:bg-(--hover-btn-sidebar) transition"
                             >
                                 <td className="p-3 text-(--text-sidebar) font-medium whitespace-nowrap">
-                                    {permit.equipo.nombre ?? "sin equipo"}
+                                    {permit.team.name ?? "sin equipo"}
                                 </td>
                                 <td className="p-3 text-(--text-btn-sidebar) whitespace-nowrap">
-                                    {permit.tipo}
+                                    {permit.type}
                                 </td>
                                 <td
                                     className={`p-3 whitespace-nowrap font-semibold ${getPermitStatusStyles(
-                                        permit.estado
+                                        permit.state
                                     )}`}
                                 >
-                                    {permit.estado}
+                                    {permit.state}
                                 </td>
                                 <td className="p-3 text-(--text-btn-sidebar) max-w-xs truncate">
-                                    {permit.motivo}
+                                    {permit.reason}
                                 </td>
                                 <td className="p-3 text-center">
                                     <button
@@ -124,7 +120,7 @@ export default function RequestsList() {
             </div>
 
             <RequestDetailModal
-                solicitud={selected}
+                permit={selected}
                 onClose={() =>
                     setSelected(null)
                 }
