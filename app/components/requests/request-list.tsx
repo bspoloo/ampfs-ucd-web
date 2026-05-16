@@ -55,9 +55,6 @@ export default function RequestsList() {
         );
     }
 
-    console.log("PERMITS:");
-    console.log(permits);
-
     return (
         <>
             {toast.visible && <Toast message={toast.message} type={toast.type} />}

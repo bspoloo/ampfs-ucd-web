@@ -24,10 +24,7 @@ export function usePermits() {
         data: session,
         status
     } = useSession();
-
-    console.log( session?.accessToken);
     
-
     const [permits, setPermits] =
         useState<Permit[]>([]);
 
@@ -83,11 +80,6 @@ export function usePermits() {
                             permit.equipo.nombre,
                     }
                 }));
-
-            console.log(
-                "FORMATTED:",
-                formattedPermits
-            );
 
             setPermits(formattedPermits);
 
@@ -157,9 +149,7 @@ export function usePermits() {
             );
 
         } catch (err) {
-
             console.error(err);
-
         }
     }
 

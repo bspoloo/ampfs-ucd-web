@@ -124,9 +124,6 @@ const handler = NextAuth({
             return true;
         },
         async jwt({ token, user, account, profile }) {
-            console.log("JWT CALLBACK");
-            console.log("USER:", user);
-            console.log("TOKEN:", token);
             if (account?.provider === "google" && profile) {
                 try {
                     const userResponse = await SyncUserRequestService.syncUserRequestEmail(profile);
@@ -157,8 +154,6 @@ const handler = NextAuth({
             return token;
         },
         async session({ session, token }: { session: Session, token: JWT }) {
-            console.log("SESSION CALLBACK");
-            console.log(token);
             if (token) {
                 session.user.id = token.id as string;
                 session.user.email = token.email as string;

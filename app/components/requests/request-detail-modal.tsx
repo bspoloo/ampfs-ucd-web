@@ -55,7 +55,7 @@ export default function RequestDetailModal({
     const {
         color,
         icon: EstadoIcon
-    } = ESTADO_CONFIG[solicitud.estado];
+    } = ESTADO_CONFIG[solicitud.state];
 
     return (
 
@@ -98,7 +98,7 @@ export default function RequestDetailModal({
                             </p>
 
                             <p className="text-sm font-medium text-(--text-sidebar)">
-                                {solicitud.tipo}
+                                {solicitud.type}
                             </p>
                         </div>
 
@@ -136,7 +136,7 @@ export default function RequestDetailModal({
 
                             <p className="text-sm font-medium text-(--text-sidebar)">
                                 {new Date(
-                                    solicitud.fecha_solicitud
+                                    solicitud.permit_date
                                 ).toLocaleDateString()}
                             </p>
 
@@ -158,36 +158,27 @@ export default function RequestDetailModal({
                             </p>
 
                             <p className={`text-sm font-semibold ${color}`}>
-                                {solicitud.estado}
+                                {solicitud.state}
                             </p>
-
                         </div>
-
                     </div>
 
                     {/* Motivo */}
                     <div className="flex items-start gap-3">
-
                         <FileText className="w-4 h-4 text-(--text-btn-sidebar) shrink-0 mt-0.5" />
-
                         <div className="flex-1">
-
                             <p className="text-xs text-(--text-btn-sidebar) mb-1">
                                 Motivo
                             </p>
-
                             <p className="text-sm text-(--text-sidebar) leading-relaxed">
-                                {solicitud.motivo}
+                                {solicitud.reason}
                             </p>
-
                         </div>
-
                     </div>
-
                 </div>
 
                 {/* Footer */}
-                {solicitud.estado === "pendiente" && (
+                {solicitud.state === "pendiente" && (
 
                     <div className="px-6 py-4 border-t border-(--border-dark) flex justify-end gap-3">
 
