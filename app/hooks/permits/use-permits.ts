@@ -145,9 +145,8 @@ export function usePermits() {
             );
 
         } catch (err) {
-
-            console.error(err);
-
+            console.error(err)
+            throw err
         }
     }
 
