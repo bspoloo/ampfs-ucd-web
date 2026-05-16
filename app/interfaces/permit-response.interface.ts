@@ -2,15 +2,14 @@ import { PermitStatusBackend } from "../consts/permit-state";
 
 export interface PermitResponse {
     id: string;
-    tipo: string;
-    motivo: string;
-
-    estado: PermitStatusBackend;
-
-    fecha_solicitud: string;
-
-    equipo: {
+    type: string;
+    reason: string;
+    state: PermitStatusBackend;
+    match_date: Date;
+    preference_time: string;
+    team: {
         id: string;
-        nombre: string;
+        name: string;
+        description: string;
     };
 }

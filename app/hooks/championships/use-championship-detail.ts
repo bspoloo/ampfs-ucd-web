@@ -11,19 +11,15 @@ import {
     getChampionship,
     updateChampionshipState
 } from "@/app/services/championship.service";
+import { useToast } from "@/app/hooks/use-toast";
 
 export function useChampionshipDetail(id: string) {
     const [championship, setChampionship] = useState<Championship | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [status, setStatus] = useState<StatusFront | null>(null);
-
-    const [toast, setToast] = useState<{
-        message: string;
-        type: "success" | "error";
-    } | null>(null);
-
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { showToast } = useToast();
     const [pendingStatus, setPendingStatus] = useState<StatusFront | null>(null);
     const [isUpdating, setIsUpdating] = useState(false);
 
@@ -99,21 +95,11 @@ export function useChampionshipDetail(id: string) {
         }
     }
 
-    function showToast(
-        message: string,
-        type: "success" | "error"
-    ) {
-        setToast({ message, type });
-        setTimeout(() => {
-            setToast(null);
-        }, 2000);
-    }
     return {
         championship,
         loading,
         error,
         status,
-        toast,
         isModalOpen,
         pendingStatus,
         isUpdating,

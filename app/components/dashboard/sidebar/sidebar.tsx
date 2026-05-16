@@ -5,12 +5,20 @@ import { useState, useEffect } from "react";
 import { PanelLeft, DoorOpen } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { SIDE_BAR_MENU_DASHBOARD } from "@/app/consts/side-bar-menu";
+import { useToast } from "@/app/hooks/use-toast";
 
 export default function Sidebar() {
     const router = useRouter();
     const pathname = usePathname();
     const [collapsed, setCollapsed] = useState(false);
     const { data: session } = useSession();
+    const { showToast } = useToast();
+
+    async function handleLogout() {
+        showToast("Sesión cerrada. ¡Hasta pronto!", "info");
+        await new Promise(r => setTimeout(r, 900));
+        await signOut({ redirect: true, callbackUrl: "/login" });
+    }
 
     const verifyRoute = (route: string): boolean => {
         return pathname.startsWith(route);
@@ -68,12 +76,7 @@ export default function Sidebar() {
             </div>
 
             <button
-                onClick={async () => {
-                    await signOut({
-                        redirect: true,
-                        callbackUrl: '/login'
-                    });
-                }}
+                onClick={handleLogout}
                 className="cursor-pointer flex items-center justify-center gap-2 w-full border border-(--border-dark) py-2 rounded hover:bg-(--btn-activo-sidebar) transition"
             >
                 {collapsed

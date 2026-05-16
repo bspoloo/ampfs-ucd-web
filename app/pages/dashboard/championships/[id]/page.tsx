@@ -2,7 +2,6 @@
 
 import { useParams } from "next/navigation";
 import Categories from "@/app/components/championships/categories";
-import Toast from "@/app/components/ui/toast";
 import ConfirmModal from "@/app/components/ui/confirm-modal";
 import Loader from "@/app/components/loader";
 import { getStatusStyles } from "@/app/functions/get-status-styles";
@@ -19,7 +18,6 @@ export default function ChampionshipDetail() {
         loading,
         error,
         status,
-        toast,
         isModalOpen,
         pendingStatus,
         isUpdating,
@@ -86,13 +84,6 @@ export default function ChampionshipDetail() {
             </div>
 
             <Categories />
-
-            {toast && (
-                <Toast
-                    message={toast.message}
-                    type={toast.type}
-                />
-            )}
 
             <ConfirmModal
                 isOpen={isModalOpen}

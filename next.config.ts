@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  
+
   // distDir: 'build',
   output: 'standalone',
   env: {
@@ -53,11 +53,6 @@ const nextConfig: NextConfig = {
         source: '/dashboard/championships/:path*',
         destination: '/pages/dashboard/championships/:path*',
       },
-      // Other roles pages
-      {
-        source: '/player',
-        destination: '/pages/player',
-      },
       {
         source: '/referee',
         destination: '/pages/referee',
@@ -70,7 +65,20 @@ const nextConfig: NextConfig = {
         source: '/auth/error',
         destination: '/pages/auth/error',
       },
-
+      // Player
+      // Other roles pages
+      {
+        source: '/player',
+        destination: '/pages/player',
+      },
+      {
+        source: '/player/requests',
+        destination: '/pages/player/requests',
+      },
+      {
+        source: '/player/profile',
+        destination: '/pages/player/profile',
+      }
       //always add in the final
       // {
       //   source: '/:path*',
