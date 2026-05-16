@@ -6,8 +6,8 @@ export interface Permit {
     reason: string;
     state: PermitStatusFront;
     permit_date: string;
-    equipo: {
+    team: {
         id: string;
-        nombre: string;
+        name: string;
     };
 }

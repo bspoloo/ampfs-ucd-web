@@ -3,7 +3,6 @@ import { Permit } from "../interfaces/permit.interface";
 import { PermitResponse } from "../interfaces/permit-response.interface";
 
 const API_URL = process.env.BACKEND_API_URL;
-
 interface ReviewPermitBody {
     estado: PermitStatusBackend;
 }
@@ -55,8 +54,10 @@ export async function reviewPermit(
     );
 
     if (!response.ok) {
+        console.log(response);
+        
         throw new Error(
-            "Error al revisar el permiso"
+            `Error al revisar el permiso` 
         );
     }
 
