@@ -2,7 +2,7 @@
 
 import React from "react";
 
-export const MessageDetail = ({ msg }) => {
+export const MessageDetail = ({ msg } : any) => {
   if (!msg)
     return (
       <div className="flex-1 bg-[#121212] flex items-center justify-center text-gray-500">
