@@ -2,7 +2,7 @@
 
 import React from "react";
 
-export const MessageItem = ({ msg, active, onClick }) => (
+export const MessageItem = ({ msg, active, onClick }: any) => (
   <div
     onClick={onClick}
     className={`flex items-center gap-3 p-4 cursor-pointer border-l-4 transition-all ${
