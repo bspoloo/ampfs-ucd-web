@@ -8,10 +8,12 @@ import { Permit } from "@/app/interfaces/permit.interface";
 import { usePermits } from "@/app/hooks/permits/use-permits";
 import { getPermitStatusStyles } from "@/app/functions/get-permit-status-style";
 import { useToast } from "@/app/hooks/use-toast";
+import { useMessage } from "@/app/context/message-context";
 
 export default function RequestsList() {
     const { permits, loading, error, updatePermitStatus } = usePermits();
     const { showToast } = useToast();
+    const { showMessage } = useMessage();
 
     const [selected, setSelected] = useState<Permit | null>(null);
 
@@ -20,6 +22,7 @@ export default function RequestsList() {
         try {
             await updatePermitStatus(id, "aprobado");
             showToast("Solicitud aprobada correctamente.", "success");
+            showMessage("El equipo podría jugar doble partido en fechas posteriores.", "info")
         } catch {
             showToast("Error al aprobar la solicitud. Intenta de nuevo.", "error");
         }
@@ -87,7 +90,6 @@ export default function RequestsList() {
                     </tbody>
                 </table>
             </div>
-
             <RequestDetailModal
                 permit={selected}
                 onClose={() => setSelected(null)}
