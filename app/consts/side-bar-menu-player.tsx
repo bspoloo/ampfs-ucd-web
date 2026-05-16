@@ -4,12 +4,12 @@ import { SideBarDashboard } from "../interfaces/dashboard/side-bar-dashboard";
 export const SIDE_BAR_MENU_PLAYER: SideBarDashboard[] = [
     {
         name: "Solicitudes",
-        route: "/pages/player/requests",
+        route: "/player/requests",
         icon: Mails,
     },
     {
         name: "Perfil",
-        route: "/pages/player/profile",
+        route: "/player/profile",
         icon: User,
     },
 ]
