@@ -16,9 +16,9 @@ export default function RequestsList() {
     const [selected, setSelected] = useState<Permit | null>(null);
 
     async function handleApprove(id: string) {
+        setSelected(null);
         try {
             await updatePermitStatus(id, "aprobado");
-            setSelected(prev => prev ? { ...prev, estado: "aprobado" } : null);
             showToast("Solicitud aprobada correctamente.", "success");
         } catch {
             showToast("Error al aprobar la solicitud. Intenta de nuevo.", "error");
@@ -26,9 +26,9 @@ export default function RequestsList() {
     }
 
     async function handleReject(id: string) {
+        setSelected(null);
         try {
             await updatePermitStatus(id, "rechazado");
-            setSelected(prev => prev ? { ...prev, estado: "rechazado" } : null);
             showToast("Solicitud rechazada.", "success");
         } catch {
             showToast("Error al rechazar la solicitud. Intenta de nuevo.", "error");
