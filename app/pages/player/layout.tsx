@@ -1,16 +1,16 @@
-import PlayerSidebar from "@/app/components/player/sidebar/player-sidebar";
+import { ThemeProvider } from "@/app/context/theme-context"
+import PlayerShell from "@/app/components/player/shell/player-shell"
 
 export default function PlayerLayout({
     children,
 }: {
-    children: React.ReactNode;
+    children: React.ReactNode
 }) {
     return (
-        <div className="flex">
-            <PlayerSidebar />
-            <main className="flex-1 p-6 overflow-y-auto">
+        <ThemeProvider>
+            <PlayerShell>
                 {children}
-            </main>
-        </div>
-    );
+            </PlayerShell>
+        </ThemeProvider>
+    )
 }
