@@ -7,12 +7,21 @@ export default function Categories() {
     const [active, setActive] = useState("Tercera de ascenso");
 
     const categories = [
-        "Primera de honor",
-        "Segunda de ascenso",
-        "Tercera de ascenso",
-        "Cuarta de ascenso",
+        "Cuarta de Ascenso",
+        "Tercera de Ascenso",
+        "Segunda de Ascenso",
+        "Primera de Honor",
+        "Seniors Ascenso",
+        "Seniors Primera",
+        "Masters Ascenso",
+        "Masters Primera",
+        "Guardia de Honor",
+        "Super Guardia",
+        "Damas segunda",
         "Damas primera",
-        "Damas segunda"
+        "Damas Seniors",
+        "Varones sub 20",
+        "Damas sub 20"
     ];
 
     return (
