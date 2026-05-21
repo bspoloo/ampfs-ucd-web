@@ -50,6 +50,14 @@ const nextConfig: NextConfig = {
         destination: '/pages/dashboard/requests',
       },
       {
+        source: '/dashboard/clubs',
+        destination: '/pages/dashboard/clubs',
+      },
+      {
+        source: '/dashboard/players',
+        destination: '/pages/dashboard/players',
+      },
+      {
         source: '/dashboard/championships/:path*',
         destination: '/pages/dashboard/championships/:path*',
       },
