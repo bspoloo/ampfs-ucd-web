@@ -1,36 +1,37 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-    reverseStateMap,
-    stateMap,
-    StatusFront
-} from "@/app/consts/champion-state";
+import { reverseStateMap, stateMap, StatusFront } from "@/app/consts/champion-state";
 import { Championship } from "@/app/interfaces/championship.interface";
-import {
-    getChampionship,
-    updateChampionshipState
-} from "@/app/services/championship.service";
+import { getChampionship, updateChampionshipState } from "@/app/services/championship.service";
 import { useToast } from "@/app/hooks/use-toast";
+import { useSession } from "next-auth/react";
 
 export function useChampionshipDetail(id: string) {
+    const {data: session, status: sessionStatus} = useSession();
     const [championship, setChampionship] = useState<Championship | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [status, setStatus] = useState<StatusFront | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { showToast } = useToast();
+    const {showToast} = useToast();
     const [pendingStatus, setPendingStatus] = useState<StatusFront | null>(null);
     const [isUpdating, setIsUpdating] = useState(false);
 
     useEffect(() => {
-        loadChampionship();
-    }, [id]);
+        if (sessionStatus === "loading") {
+            return;
+        }
+        if (!session?.accessToken) {
+            return;
+        } 
+        loadChampionship(); 
+    }, [id, session, sessionStatus]);
 
     async function loadChampionship() {
         try {
             setLoading(true);
-            const data = await getChampionship(id);
+            const data = await getChampionship(id, session!.accessToken);
             setChampionship(data);
             setStatus(reverseStateMap[data.state]);
         } catch (err) {
@@ -66,7 +67,8 @@ export function useChampionshipDetail(id: string) {
             const updatedChampionship =
                 await updateChampionshipState(
                     id,
-                    stateMap[pendingStatus]
+                    stateMap[pendingStatus],
+                    session!.accessToken
                 );
             setChampionship(updatedChampionship);
             setStatus(
