@@ -1,15 +1,17 @@
 import { Championship } from "../interfaces/championship.interface";
 
-export async function getChampionship(
-    id: string
-): Promise<Championship> {
-
+export async function getChampionship(id: string, token: string): Promise<Championship> {
     try {
-
         const API_BACKEND = process.env.BACKEND_API_URL;
-
         const res = await fetch(
-            `${API_BACKEND}/championship/${id}`
+            `${API_BACKEND}/championship/${id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
         );
 
         if (!res.ok) {
@@ -21,12 +23,7 @@ export async function getChampionship(
         return res.json();
 
     } catch (e) {
-
-        const errorMessage =
-            e instanceof Error
-                ? e.message
-                : String(e);
-
+        const errorMessage = e instanceof Error? e.message: String(e);
         throw new Error(
             `Error obteniendo campeonato: ${errorMessage}`
         );
@@ -35,23 +32,20 @@ export async function getChampionship(
 
 export async function updateChampionshipState(
     id: string,
-    state: "ACTIVE" | "IN_PROGRESS" | "FINISHED"
+    state: "ACTIVE" | "IN_PROGRESS" | "FINISHED",
+    token: string
 ): Promise<Championship> {
-
     try {
-
-        const API_BACKEND =
-            process.env.BACKEND_API_URL;
-
+        const API_BACKEND = process.env.BACKEND_API_URL;
         const res = await fetch(
             `${API_BACKEND}/championship/${id}/state`,
             {
                 method: "PATCH",
-
                 body: JSON.stringify({ state }),
 
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
                 }
             }
         );
@@ -61,16 +55,9 @@ export async function updateChampionshipState(
                 "Error actualizando estado"
             );
         }
-
         return res.json();
-
     } catch (e) {
-
-        const errorMessage =
-            e instanceof Error
-                ? e.message
-                : String(e);
-
+        const errorMessage = e instanceof Error ? e.message : String(e);
         throw new Error(
             `Error actualizando estado: ${errorMessage}`
         );
