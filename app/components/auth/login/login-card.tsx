@@ -48,7 +48,8 @@ export default function LoginCard() {
                 return;
             }
             if (response?.ok && response.status === 200) {
-                router.push('/');
+                // redirecto to homepage
+                router.push('/'); 
                 router.refresh(); 
             }
 
