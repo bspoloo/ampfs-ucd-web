@@ -27,16 +27,8 @@ export function useClubs() {
             setLoading(true)
             setError(null)
 
-            const data: ClubResponse[] = await getClubs(session!.accessToken)
-
-            const formatted: Club[] = data.map(club => ({
-                id: club.id,
-                name: club.name,
-                president: club.president,
-                delegate: club.delegate,
-            }))
-
-            setClubs(formatted)
+            const data: ClubResponse[] = await getClubs(session!.accessToken);
+            setClubs(data)
         } catch (err) {
             console.error(err)
             const message = err instanceof Error ? err.message : "Error al cargar los clubes"
