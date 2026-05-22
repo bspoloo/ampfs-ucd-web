@@ -1,8 +1,9 @@
 import { Payload } from "../interfaces/auth/payload.interface";
 
-export async function getData<R>(payload: Payload): Promise<R> {
+export async function getDataList<R>(payload: Payload): Promise<R> {
     try {
-        const url : string = process.env.NEXT_PUBLIC_API_URL as string;
+        const url : string = process.env.BACKEND_API_URL as string;
+        
         const response = await fetch(`${url}/${payload.endpoint}`, {
             method: "GET",
             headers: {
