@@ -1,5 +1,5 @@
-export interface Club {
-    id?: string
+export interface ClubResponse {
+    id: string
     name: string
     logo_url: string;
     president: string
