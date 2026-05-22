@@ -5,12 +5,13 @@ import Loader from "@/app/components/loader"
 import { useClubs } from "@/app/hooks/clubs/use-clubs"
 import { useToast } from "@/app/context/toast-context"
 import { useMessage } from "@/app/context/message-context"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import { Club } from "@/app/interfaces/club.interface"
 import FormClub from "./form-club"
+import { PaginationProps } from "@/app/props/page.props"
 
-export default function ClubsTable() {
-    const { clubs, loading, error } = useClubs()
+export default function ClubsTable({page, limit, refresh}: PaginationProps & {refresh: number}) {
+    const { clubs, loading, error } = useClubs({page, limit}, refresh)
     
     if (loading) return <Loader />
 

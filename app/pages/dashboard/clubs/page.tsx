@@ -6,45 +6,33 @@ import FormClub from "@/app/components/clubs/form-club"
 import { useMessage } from "@/app/context/message-context";
 import { useToast } from "@/app/context/toast-context";
 import { Club } from "@/app/interfaces/club.interface";
+import { PaginationProps } from "@/app/props/page.props";
 import { useState } from "react";
 
 export default function ClubsPage() {
-    const { showToast } = useToast();
-        const { showMessage } = useMessage();
-        const [isOpen, setIsOpen] = useState<boolean>(false)
-    
-        const [selected, setSelected] = useState<Club | null>(null);
-    
-        async function handleApprove(id: string) {
-            setSelected(null);
-            try {
-                // await updatePermitStatus(id, "aprobado");
-                showToast("Solicitud aprobada correctamente.", "success");
-    
-                showMessage("El equipo podría jugar doble partido en fechas posteriores.", "info")
-            } catch {
-                showToast("Error al aprobar la solicitud. Intenta de nuevo.", "error");
-            }
-        }
-    
-        async function handleReject(id: string) {
-            setSelected(null);
-            try {
-                // await updatePermitStatus(id, "rechazado");
-                showToast("Solicitud rechazada.", "success");
-            } catch {
-                showToast("Error al rechazar la solicitud. Intenta de nuevo.", "error");
-            }
-        }
+
+    const [isOpen, setIsOpen] = useState<boolean>(false)
+    const [isGettingClubs, setisGettingClubs] = useState<boolean>(false)
+    const [selected, setSelected] = useState<Club | null>(null);
+    const [refresh, setRefresh] = useState(0);
+    const [pagination, setPagination] = useState<PaginationProps>({
+        page: 1,
+        limit: 10
+    });
+
+    function handleApprove() {
+        console.log("trayendo devuelta daots");
+        setRefresh(prev => prev + 1);
+    }
+
     return <>
         <div className="flex flex-col gap-0">
-            <ClubsHeader openForm={() => setIsOpen(true)}/>
-            <ClubsTable />
+            <ClubsHeader openForm={() => setIsOpen(true)} />
+            <ClubsTable page={pagination.page} limit={pagination.limit} refresh={refresh}/>
         </div>
         <FormClub
             isOpen={isOpen}
             onAccept={handleApprove}
-            onReject={handleReject}
             onClose={() => setIsOpen(false)}
         >
         </FormClub>
