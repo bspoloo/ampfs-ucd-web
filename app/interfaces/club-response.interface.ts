@@ -1,4 +1,4 @@
-export interface Club {
+export interface ClubResponse {
     id: string
     name: string
     president: string
