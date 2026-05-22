@@ -3,14 +3,15 @@
 import { Eye, RefreshCcw } from "lucide-react"
 import Loader from "@/app/components/loader"
 import { useClubs } from "@/app/hooks/clubs/use-clubs"
-import { useToast } from "@/app/context/toast-context"
-import { useMessage } from "@/app/context/message-context"
-import { Dispatch, SetStateAction, useState } from "react"
 import { Club } from "@/app/interfaces/club.interface"
-import FormClub from "./form-club"
 import { PaginationProps } from "@/app/props/page.props"
 
-export default function ClubsTable({page, limit, refresh}: PaginationProps & {refresh: number}) {
+interface ClubsTableProps extends PaginationProps {
+    refresh: number
+    onView: (club: Club) => void
+}
+
+export default function ClubsTable({page, limit, refresh, onView}: ClubsTableProps) {
     const { clubs, loading, error } = useClubs({page, limit}, refresh)
     
     if (loading) return <Loader />
@@ -64,7 +65,7 @@ export default function ClubsTable({page, limit, refresh}: PaginationProps & {re
                                     {club.delegate ?? "—"}
                                 </td>
                                 <td className="p-3 text-center">
-                                    <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-(--border-dark) text-(--text-btn-sidebar) hover:bg-(--hover-btn-sidebar) transition cursor-pointer mx-auto">
+                                    <button onClick={() => onView(club)} className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-(--border-dark) text-(--text-btn-sidebar) hover:bg-(--hover-btn-sidebar) transition cursor-pointer mx-auto">
                                         <Eye className="w-3.5 h-3.5" />
                                         Ver
                                     </button>
