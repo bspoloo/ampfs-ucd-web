@@ -116,7 +116,7 @@ export function IntroAnimation({ onDone }: { onDone: () => void }) {
               "opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.05s, transform 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.05s",
           }}
         >
-          AMPFS-UDC
+          AMPFS-UCD
         </h1>
 
         {/* Línea decorativa */}
