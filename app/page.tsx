@@ -516,7 +516,7 @@ export default function Home() {
 
         <div className="border-t border-white/[0.04] py-5 px-6">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
-            <p className="text-white/20 text-xs">© 2025 AMPFS UDC. Todos los derechos reservados.</p>
+            <p className="text-white/20 text-xs">© 2025 AMPFS UCD. Todos los derechos reservados.</p>
             <p className="text-white/20 text-xs">Desarrollado por el equipo de Ciencias</p>
           </div>
         </div>

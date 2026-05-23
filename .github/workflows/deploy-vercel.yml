@@ -12,7 +12,7 @@ env:
   # APPLICATION_PUBLISH_PROFILE: ${{ secrets.APP_PUBLISH_PROFILE  }}
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-  WEBAPP_NAME: "ampfs-udc"
+  WEBAPP_NAME: "ampfs-ucd"
 
 jobs:
   test:
