@@ -10,7 +10,7 @@ on:
 
 env:
   APPLICATION_PUBLISH_PROFILE: ${{ secrets.APP_PUBLISH_PROFILE  }}
-  WEBAPP_NAME: "ampfs-udc"
+  WEBAPP_NAME: "ampfs-ucd"
 
 jobs:
   build:
