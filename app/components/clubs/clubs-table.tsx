@@ -5,6 +5,7 @@ import Loader from "@/app/components/loader"
 import { useClubs } from "@/app/hooks/clubs/use-clubs"
 import { Club } from "@/app/interfaces/club.interface"
 import { PaginationProps } from "@/app/props/page.props"
+import { getUrlImage } from "@/app/functions/get-url-image"
 
 interface ClubsTableProps extends PaginationProps {
     refresh: number
@@ -54,7 +55,7 @@ export default function ClubsTable({page, limit, refresh, onView}: ClubsTablePro
                                 </td>
                                 <td className="p-3 text-(--text-sidebar) font-medium whitespace-nowrap">
                                     <div className="flex items-center gap-2.5">
-                                        <img src={club.logo_url} alt={`${club.name}`} className="rounded-full w-8 h-8 object-cover shrink-0" />
+                                        <img src={getUrlImage(club.file)} alt={`${club.name}`} className="rounded-full w-8 h-8 object-cover shrink-0" />
                                         {club.name}
                                     </div>
                                 </td>

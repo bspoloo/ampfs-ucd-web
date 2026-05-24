@@ -7,6 +7,8 @@ import { useEffect, useRef, useState } from "react";
 import DefaultLogo from "../../../public/logo_default.jpg";
 import { usePostClubs } from "@/app/hooks/clubs/use-post-clubs";
 import { useToast } from "@/app/context/toast-context";
+import { File } from "@/app/interfaces/file.interface";
+import { getUrlImage } from "@/app/functions/get-url-image";
 
 const ONLY_LETTERS_RE = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/;
 
@@ -14,7 +16,11 @@ function capitalizeWords(str: string): string {
     return str.replace(/(^|\s)([a-záéíóúüñ])/gi, (_, sep, char) => sep + char.toUpperCase());
 }
 
-const EMPTY_CLUB: Club = { name: "", president: "", delegate: "", logo_url: "" };
+const EMPTY_CLUB: Club = {
+    name: "",
+    president: "",
+    delegate: "",
+};
 
 export default function FormClub({ data: club, isOpen, onAccept, onClose }: FormDataProps<Club>) {
     const [clubData, setClubData] = useState<Club>(club ?? EMPTY_CLUB);
@@ -26,14 +32,16 @@ export default function FormClub({ data: club, isOpen, onAccept, onClose }: Form
 
     function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            const base64 = event.target?.result as string;
-            setClubData(prev => ({ ...prev, logo_url: base64 }));
-            setHasLogo(true);
-        };
-        reader.readAsDataURL(file);
+        // if (!file) return;
+
+        // const reader = new FileReader();
+        // reader.onload = (event) => {
+        //     const base64 = event.target?.result as string;
+        //     setClubData(prev => ({ ...prev, file_id: base64 }));
+        //     setHasLogo(true);
+        // };
+        // reader.readAsDataURL(file);
+        
     }
 
     function handleNameChange(value: string) {
@@ -90,7 +98,7 @@ export default function FormClub({ data: club, isOpen, onAccept, onClose }: Form
     useEffect(() => {
         if (!club) return;
         setClubData(club);
-        setHasLogo(!!club.logo_url);
+        setHasLogo(!!club.file?.filename);
     }, [club]);
 
     if (!isOpen) return null;
@@ -133,7 +141,7 @@ export default function FormClub({ data: club, isOpen, onAccept, onClose }: Form
                             className="w-62.5 h-62.5 rounded-full border-2 border-[#b11212] overflow-hidden cursor-pointer relative group"
                         >
                             <img
-                                src={clubData.logo_url || DefaultLogo.src}
+                                src={getUrlImage()}
                                 alt="Logo del club"
                                 className="w-full h-full object-cover"
                             />

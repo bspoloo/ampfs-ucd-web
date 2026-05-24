@@ -1,18 +1,21 @@
 import { Payload } from "../interfaces/auth/payload.interface";
 
-export async function getDataList<R>(payload: Payload): Promise<R> {
+// E is the entity to post
+// R is the response
+
+export async function deleteData<R>(payload: Payload): Promise<R> {
     try {
         const url: string = process.env.BACKEND_API_URL as string;
-
         const response = await fetch(`${url}/${payload.endpoint}`, {
-            method: "GET",
+            method: "DELETE",
             headers: payload.accessToken ? {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${payload.accessToken}`
             } : {
                 "Content-Type": "application/json",
-            }
+            },
         });
+
         if (!response.ok) {
             let errorMessage = `Error ${response.status}`;
             try {
@@ -26,6 +29,6 @@ export async function getDataList<R>(payload: Payload): Promise<R> {
 
         return await response.json() as R;
     } catch (err) {
-        throw new Error(`Error getting data: ${(err as Error).message}`);
+        throw new Error(`Error al borrar datos: ${(err as Error).message}`);
     }
 }
