@@ -5,18 +5,13 @@ import { File as FileResponse} from "../interfaces/file.interface";
 // E is the entity to post
 // R is the response
 
-export async function uploadFile(imageFile: File): Promise<FileResponse>{
+export async function uploadFile(formData: FormData, accessToken: string): Promise<FileResponse>{
     try {
-        const { data: session, status } = useSession()
-        const formData = new FormData();
-
-        formData.append("file", imageFile);
-        
         const url: string = process.env.BACKEND_API_URL as string;
         const response = await fetch(`${url}/file/upload`, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${session?.accessToken}`
+                "Authorization": `Bearer ${accessToken}`
             },
             body: formData
         });

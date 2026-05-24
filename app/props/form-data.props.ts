@@ -1,6 +1,9 @@
+import { Dispatch, SetStateAction } from "react";
+
 export type FormDataProps<E> = {
-    data?: E | null;
+    data?: E | null
+    setSelectedData: Dispatch<SetStateAction<E | null>>;
     isOpen: boolean;
-    onClose: () => void;
+    onClose: (state: "update" | "insert", data?: E) => void;
     onAccept: () => void;
 }

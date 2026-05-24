@@ -7,6 +7,7 @@ import { ClubResponse } from "@/app/interfaces/club-response.interface"
 import { getClubs } from "@/app/services/club.service"
 import { getDataList } from "@/app/functions/get-data-list"
 import { postData } from "@/app/functions/post-data"
+import { ClubDto } from "@/app/interfaces/club.dto"
 
 export function usePostClubs(club: Club, isSend: boolean) {
     const { data: session, status } = useSession()
@@ -18,11 +19,17 @@ export function usePostClubs(club: Club, isSend: boolean) {
         try {
             setLoading(true)
             setError(null)
+            console.log(club);
             
-            const data: ClubResponse = await postData<Club, ClubResponse>({
+            const data: ClubResponse = await postData<ClubDto, ClubResponse>({
                 endpoint: `clubs`,
                 accessToken: session!.accessToken
-            }, club);
+            }, {
+                name: club.name,
+                president: club.president,
+                delegate: club.delegate,
+                file_id: club.file?.id!
+            });
             setClubResponse(data)
         } catch (err) {
             console.error(err)

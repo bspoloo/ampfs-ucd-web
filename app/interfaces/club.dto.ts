@@ -1,10 +1,9 @@
 import { File } from "./file.interface"
 
-export interface Club {
+export interface ClubDto {
     id?: string
     name: string
     president: string
     delegate: string
-    teamCount?: number
-    file?: File
+    file_id: string
 }
