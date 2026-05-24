@@ -26,10 +26,10 @@ export default function ClubsTable({page, limit, refresh, onView}: ClubsTablePro
                 <thead className="bg-(--bg-main) sticky top-0 z-10">
                     <tr className="text-(--text-btn-sidebar)">
                         <th className="p-3 text-left w-12">#</th>
-                        <th className="p-3 text-left w-12">Logo</th>
                         <th className="p-3 text-left">Club</th>
                         <th className="p-3 text-left">Presidente</th>
                         <th className="p-3 text-left">Delegado</th>
+                        <th className="p-3 text-center">Equipos</th>
                         <th className="p-3 text-center">
                             <RefreshCcw className="w-4 h-4 mx-auto" />
                         </th>
@@ -39,7 +39,7 @@ export default function ClubsTable({page, limit, refresh, onView}: ClubsTablePro
                 <tbody>
                     {clubs.length === 0 ? (
                         <tr>
-                            <td colSpan={5} className="p-6 text-center text-(--text-btn-sidebar)">
+                            <td colSpan={6} className="p-6 text-center text-(--text-btn-sidebar)">
                                 No hay clubes registrados.
                             </td>
                         </tr>
@@ -52,17 +52,20 @@ export default function ClubsTable({page, limit, refresh, onView}: ClubsTablePro
                                 <td className="p-3 text-(--text-btn-sidebar) font-mono">
                                     {index + 1}
                                 </td>
-                                <td className="p-2 text-(--text-sidebar) font-medium whitespace-nowrap">
-                                    <img src={club.logo_url} alt={`${club.name} image`} className="rounded-full w-10 h-10 object-cover" />
-                                </td>
                                 <td className="p-3 text-(--text-sidebar) font-medium whitespace-nowrap">
-                                    {club.name}
+                                    <div className="flex items-center gap-2.5">
+                                        <img src={club.logo_url} alt={`${club.name}`} className="rounded-full w-8 h-8 object-cover shrink-0" />
+                                        {club.name}
+                                    </div>
                                 </td>
                                 <td className="p-3 text-(--text-btn-sidebar) whitespace-nowrap">
                                     {club.president ?? "—"}
                                 </td>
                                 <td className="p-3 text-(--text-btn-sidebar) whitespace-nowrap">
                                     {club.delegate ?? "—"}
+                                </td>
+                                <td className="p-3 text-center text-(--text-btn-sidebar) font-mono">
+                                    {club.teamCount ?? 0}
                                 </td>
                                 <td className="p-3 text-center">
                                     <button onClick={() => onView(club)} className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-(--border-dark) text-(--text-btn-sidebar) hover:bg-(--hover-btn-sidebar) transition cursor-pointer mx-auto">

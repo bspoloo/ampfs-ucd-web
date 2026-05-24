@@ -24,7 +24,15 @@ export function useClubs(pagination: {page: number, limit: number}, refresh: num
                 endpoint: `clubs`,
                 accessToken: session!.accessToken
             });
-            setClubs(data)
+            const mapped: Club[] = data.map(c => ({
+                id: c.id,
+                name: c.name,
+                logo_url: c.logo_url,
+                president: c.president,
+                delegate: c.delegate,
+                teamCount: c.team_count,
+            }))
+            setClubs(mapped)
         } catch (err) {
             console.error(err)
             const message = err instanceof Error ? err.message : "Error al cargar los clubes"
