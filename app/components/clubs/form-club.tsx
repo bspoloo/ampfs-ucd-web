@@ -145,13 +145,6 @@ export default function FormClub({ data: club, isOpen, onAccept, onClose }: Form
                         {!hasLogo && (
                             <p className="text-xs text-amber-400 text-center">Sin logo — requerido</p>
                         )}
-                        <button
-                            type="button"
-                            onClick={() => fileInputRef.current?.click()}
-                            className="px-5 py-2 rounded-lg bg-[#292929] hover:bg-[#181717] text-white text-sm font-medium transition cursor-pointer"
-                        >
-                            Insertar logo
-                        </button>
                     </div>
 
                     <div className="flex flex-col gap-5 py-6 w-[250px]">
