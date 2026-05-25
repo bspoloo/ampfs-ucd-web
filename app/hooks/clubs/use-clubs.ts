@@ -27,7 +27,7 @@ export function useClubs(pagination: {page: number, limit: number}, refresh: num
             const mapped: Club[] = data.map(c => ({
                 id: c.id,
                 name: c.name,
-                logo_url: c.logo_url,
+                file: c.file,
                 president: c.president,
                 delegate: c.delegate,
                 teamCount: c.team_count,

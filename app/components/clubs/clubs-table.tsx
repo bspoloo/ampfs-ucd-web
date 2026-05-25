@@ -1,17 +1,19 @@
 "use client"
 
-import { Eye, RefreshCcw } from "lucide-react"
+import { Eye, Pen, RefreshCcw } from "lucide-react"
 import Loader from "@/app/components/loader"
 import { useClubs } from "@/app/hooks/clubs/use-clubs"
 import { Club } from "@/app/interfaces/club.interface"
 import { PaginationProps } from "@/app/props/page.props"
+import { getUrlImage } from "@/app/functions/get-url-image"
 
 interface ClubsTableProps extends PaginationProps {
     refresh: number
     onView: (club: Club) => void
+    onEdit: (club: Club) => void
 }
 
-export default function ClubsTable({page, limit, refresh, onView}: ClubsTableProps) {
+export default function ClubsTable({page, limit, refresh, onView, onEdit}: ClubsTableProps) {
     const { clubs, loading, error } = useClubs({page, limit}, refresh)
     
     if (loading) return <Loader />
@@ -54,7 +56,7 @@ export default function ClubsTable({page, limit, refresh, onView}: ClubsTablePro
                                 </td>
                                 <td className="p-3 text-(--text-sidebar) font-medium whitespace-nowrap">
                                     <div className="flex items-center gap-2.5">
-                                        <img src={club.logo_url} alt={`${club.name}`} className="rounded-full w-8 h-8 object-cover shrink-0" />
+                                        <img src={getUrlImage(club.file)} alt={`${club.name}`} className="rounded-full w-8 h-8 object-cover shrink-0" />
                                         {club.name}
                                     </div>
                                 </td>
@@ -67,10 +69,12 @@ export default function ClubsTable({page, limit, refresh, onView}: ClubsTablePro
                                 <td className="p-3 text-center text-(--text-btn-sidebar) font-mono">
                                     {club.teamCount ?? 0}
                                 </td>
-                                <td className="p-3 text-center">
-                                    <button onClick={() => onView(club)} className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-(--border-dark) text-(--text-btn-sidebar) hover:bg-(--hover-btn-sidebar) transition cursor-pointer mx-auto">
+                                <td className="flex justify-center items-center gap-3 p-3 text-center">
+                                    <button onClick={() => onView(club)} className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-(--border-dark) text-(--text-btn-sidebar) hover:bg-(--hover-btn-sidebar) transition cursor-pointer">
                                         <Eye className="w-3.5 h-3.5" />
-                                        Ver
+                                    </button>
+                                    <button onClick={() => onEdit(club)} className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg border border-(--border-dark) text-(--text-btn-sidebar) hover:bg-(--hover-btn-sidebar) transition cursor-pointer">
+                                        <Pen className="w-3.5 h-3.5" />
                                     </button>
                                 </td>
                             </tr>
