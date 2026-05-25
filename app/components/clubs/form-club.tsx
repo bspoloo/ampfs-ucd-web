@@ -12,6 +12,10 @@ import { postData } from "@/app/functions/post-data";
 import { File as FileData } from "@/app/interfaces/file.interface";
 import { useSession } from "next-auth/react";
 import { uploadFile } from "@/app/functions/post-file";
+import { deleteData } from "@/app/functions/delete-data";
+import { usePutClub } from "@/app/hooks/clubs/use-put-clubs";
+import { putData } from "@/app/functions/put-data";
+import { ClubDto } from "@/app/interfaces/club.dto";
 
 const ONLY_LETTERS_RE = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/;
 
@@ -20,43 +24,48 @@ function capitalizeWords(str: string): string {
 }
 
 export default function FormClub({ data: club, setSelectedData, isOpen, onAccept, onClose }: FormDataProps<Club>) {
-
-    const [onSend, setOnSend] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const { response, loading: loadingClubs, error: errorClubs } = usePostClubs(club!, onSend);
     const { showToast } = useToast();
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string>("")
     const { data: session, status } = useSession()
+    const originalFileId = useRef<string | null>(club?.file?.id || null);
     
     const isEditing = !!club?.id;
 
-    function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+
+    async function handleFileChange(
+        e: React.ChangeEvent<HTMLInputElement>
+    ) {
         try {
             setLoading(true);
             setError("");
-
             const file = e.target.files?.[0];
+            const tempFile = club?.file?.id;
+
             if (!file) return;
 
-            const reader = new FileReader();
-            reader.onload = async (event) => {
-                const formData = new FormData();
+            const formData = new FormData();
+            formData.append("file", file);
 
-                formData.append("file", file);
-                const data: FileData = await uploadFile(formData, session?.accessToken!,);
-                const updatedClubData: Club = {
-                    ...club!,
-                    file: data,
-                };
-                setSelectedData(updatedClubData);
+            const data: FileData = await uploadFile(formData, session?.accessToken!);
+            const updatedClubData: Club = {
+                ...club!,
+                file: data,
             };
-            reader.readAsDataURL(file);
+
+            if (tempFile && !isEditing) {
+                await deleteData<File>({
+                    endpoint: `file/${tempFile}`,
+                    accessToken: session?.accessToken
+                });
+            }
+            setSelectedData(updatedClubData);
 
         } catch (err) {
             console.error(err);
             const message =
-                err instanceof Error ? err.message : "Error al insertar archivo";
+                err instanceof Error ? err.message : "Error al subir archivo";
             setError(message);
         } finally {
             setLoading(false);
@@ -96,25 +105,66 @@ export default function FormClub({ data: club, setSelectedData, isOpen, onAccept
     async function handleForm(e: { preventDefault(): void }) {
         e.preventDefault();
         if (!validateForm()) return;
-        setOnSend(true);
+        try {
+            setLoading(true);
+            if (isEditing) {
+                const response = await putData<ClubDto, Club>(
+                    {
+                        endpoint: "clubs",
+                        accessToken: session?.accessToken!
+                    },
+                    {
+                        id: club?.id,
+                        name: club.name,
+                        president: club.president,
+                        delegate: club.delegate,
+                        file_id: club.file?.id!
+                    }
+                );
+                showToast(
+                    `Club "${response.name}" actualizado correctamente`,
+                    "success"
+                );
+                onClose("update");
+            } else {
+                const response = await postData<ClubDto, Club>(
+                    {
+                        endpoint: "clubs",
+                        accessToken: session?.accessToken!
+                    },
+                    {
+                        name: club?.name!,
+                        president: club?.president!,
+                        delegate: club?.delegate!,
+                        file_id: club?.file?.id!
+                    }
+                );
+                showToast(
+                    `Club "${response.name}" registrado correctamente`,
+                    "success"
+                );
+                onClose("insert");
+            }
+            setSelectedData(null);
+            onAccept?.();
+        } catch (err) {
+            const message =
+                err instanceof Error
+                    ? err.message
+                    : "Error al guardar club";
+            showToast(message, "error");
+        } finally {
+            setLoading(false);
+        }
     }
 
-    useEffect(() => {
-        if (!response) return;
-        setOnSend(false);
-        setSelectedData(null);
-        showToast(`Club "${response.name}" registrado correctamente`, "success");
-        onClose("insert")
-        onAccept?.();
-    }, [response]);
 
     useEffect(() => {
-        if (!errorClubs || error) return;
+        if (error) {
+            showToast(error, "error");
+        }
 
-        setOnSend(false);
-        showToast(errorClubs, "error");
-        showToast(error, "error");
-    }, [errorClubs, error]);
+    }, [error]);
 
     useEffect(() => {
         if (!club) return;
@@ -236,11 +286,11 @@ export default function FormClub({ data: club, setSelectedData, isOpen, onAccept
                         Cancelar
                     </button>
                     <button
-                        disabled={loading || loadingClubs}
+                        disabled={loading}
                         type="submit"
                         className="flex justify-center items-center px-5 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white text-sm font-medium transition cursor-pointer disabled:opacity-60"
                     >
-                        {loading || loadingClubs ? <Loader2 className="w-4 h-4 animate-spin" /> : "Insertar"}
+                        {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : isEditing ? 'Actualizar' : 'Insertar'}
                     </button>
                 </div>
             </form>

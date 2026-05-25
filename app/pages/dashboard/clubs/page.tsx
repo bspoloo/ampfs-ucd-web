@@ -57,7 +57,6 @@ export default function ClubsPage() {
             setIsOpen(false);
             return;
         }
-
         try {
             await deleteData<File>({
                 endpoint: `file/${fileId}`,
@@ -65,9 +64,7 @@ export default function ClubsPage() {
             });
         } catch (err) {
             const message =
-                err instanceof Error
-                    ? err.message
-                    : "Error al borrar archivo";
+                err instanceof Error ? err.message : "Error al borrar archivo";
 
             showToast(message, "error");
         } finally {
