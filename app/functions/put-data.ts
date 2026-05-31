@@ -1,16 +1,10 @@
 import { Payload } from "../interfaces/auth/payload.interface";
 
-// E is the entity to post
-// R is the response
-
-export async function postData<E, R>(payload: Payload, data: E): Promise<R> {
+export async function putData<E, R>(payload: Payload, data: E): Promise<R> {
     try {
         const url: string = process.env.BACKEND_API_URL as string;
-
-        console.log("enviando datos...", data);
-        
         const response = await fetch(`${url}/${payload.endpoint}`, {
-            method: "POST",
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${payload.accessToken}`
@@ -30,6 +24,6 @@ export async function postData<E, R>(payload: Payload, data: E): Promise<R> {
 
         return await response.json() as R;
     } catch (err) {
-        throw new Error(`Error al enviar datos: ${(err as Error).message}`);
+        throw new Error(`Error al actualizar datos: ${(err as Error).message}`);
     }
 }

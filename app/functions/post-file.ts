@@ -1,21 +1,19 @@
+import { useSession } from "next-auth/react";
 import { Payload } from "../interfaces/auth/payload.interface";
+import { File as FileResponse} from "../interfaces/file.interface";
 
 // E is the entity to post
 // R is the response
 
-export async function postData<E, R>(payload: Payload, data: E): Promise<R> {
+export async function uploadFile(formData: FormData, accessToken: string): Promise<FileResponse>{
     try {
         const url: string = process.env.BACKEND_API_URL as string;
-
-        console.log("enviando datos...", data);
-        
-        const response = await fetch(`${url}/${payload.endpoint}`, {
+        const response = await fetch(`${url}/file/upload`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${payload.accessToken}`
+                "Authorization": `Bearer ${accessToken}`
             },
-            body: JSON.stringify(data)
+            body: formData
         });
         if (!response.ok) {
             let errorMessage = `Error ${response.status}`;
@@ -28,8 +26,8 @@ export async function postData<E, R>(payload: Payload, data: E): Promise<R> {
             throw new Error(errorMessage);
         }
 
-        return await response.json() as R;
+        return await response.json() as FileResponse;
     } catch (err) {
-        throw new Error(`Error al enviar datos: ${(err as Error).message}`);
+        throw new Error(`Error al subir archivo: ${(err as Error).message}`);
     }
 }

@@ -1,5 +1,6 @@
 export interface DataServer<E> {
-    data: E | null,
+    response: E | null,
     loading: boolean,
+    refetch: () => Promise<void>
     error?: string
 }
