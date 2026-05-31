@@ -1,7 +1,4 @@
-export async function getData<D>(
-    endpoint: string,
-    token: string,
-): Promise<D> {
+export async function getData<D>( endpoint: string, token: string): Promise<D> {
     try {
         const API_BACKEND = process.env.BACKEND_API_URL;
         const res = await fetch(`${API_BACKEND}/${endpoint}`, {
