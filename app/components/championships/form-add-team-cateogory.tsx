@@ -28,7 +28,7 @@ interface ProgressBarInterface {
     current: number,
 }
 
-export default function FormAddTeamCategory({ isOpen, setIsOpen, category , refetch}: FormAddTeamCategoryProps) {
+export default function FormAddTeamCategory({ isOpen, setIsOpen, category, refetch }: FormAddTeamCategoryProps) {
     const { showToast } = useToast();
     const { data: session, status } = useSession();
     const [message, setMessage] = useState<string>('');
@@ -67,19 +67,19 @@ export default function FormAddTeamCategory({ isOpen, setIsOpen, category , refe
                 );
                 await new Promise(resolve => setTimeout(resolve, 3000));
                 counter += 1;
-                setProgressBar((prev) => ({ ...prev, current: Math.round((counter / dataDict.size) * prev.max)}));
+                setProgressBar((prev) => ({ ...prev, current: Math.round((counter / dataDict.size) * prev.max) }));
                 setMessage(`Registrando ${counter} de ${dataDict.size} equipos...`);
-                showToast( `Club "${response.name}" registrado correctamente`, "success");
+                showToast(`Club "${response.name}" registrado correctamente`, "success");
             }
         } catch (err) {
             const message =
-            err instanceof Error
-            ? err.message
-            : "Error al guardar club";
+                err instanceof Error
+                    ? err.message
+                    : "Error al guardar club";
             showToast(message, "error");
         } finally {
             SelectedManger.getInstance().clearData();
-            setProgressBar((prev) => ({ ...prev, current: 0}));
+            setProgressBar((prev) => ({ ...prev, current: 0 }));
             setOnSending(false);
             setIsOpen(false);
         }
@@ -111,7 +111,7 @@ export default function FormAddTeamCategory({ isOpen, setIsOpen, category , refe
     }, [error]);
 
     if (!isOpen) return null;
-    if (loading) return <Loader />;
+    // if (loading) return <Loader />;
     if (onSending) return <ProgresBar
         isOpen={onSending}
         setIsOpen={setOnSending}
@@ -156,7 +156,12 @@ export default function FormAddTeamCategory({ isOpen, setIsOpen, category , refe
                     </div>
                 </div>
                 <div className="flex flex-col items-stretch border-b border-(--border-dark) px-3 py-5 gap-3 custom-scrollbar w-full max-h-80 overflow-y-auto">
-                    {
+                    {loading ?
+                        <div className="flex flex-col w-full justify-center items-center text-(--text-btn-sidebar)">
+                            <Loader2 className="w-[50px] h-[50px] animate-spin" ></Loader2>
+                            <p className="">cargando equipos...</p>
+                        </div>
+                        :
                         response?.data.length != 0 ?
                             response?.data.map((team, index) => (
                                 <div key={team.id}>
@@ -164,6 +169,7 @@ export default function FormAddTeamCategory({ isOpen, setIsOpen, category , refe
                                 </div>
                             )) : <p>No existen equipos</p>
                     }
+
                 </div>
 
                 <div className="flex items-center justify-center h-full py-[10px]">
