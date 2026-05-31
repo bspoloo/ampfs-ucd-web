@@ -1,9 +1,8 @@
 export interface Team {
-    id?: string
+    id: string
     name: string
     description: string
-    categoryId: string
     uniformColor: string
-    playerIds: string[]
-    clubId?: string
+    club?: { id: string; name: string }
+    categories?: { id: string; name: string }[]
 }
