@@ -6,7 +6,7 @@ import { useGetData as useData } from "@/app/hooks/use-get-data";
 import Loader from "@/app/components/loader";
 
 export default function ChampionshipsList() {
-    const { data, loading, error } = useData<Championship[]>("championship");
+    const { response: data, loading, error } = useData<Championship[]>("championship");
 
     if (loading) return <Loader />;
 

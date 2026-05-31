@@ -317,3 +317,11 @@ body {
 .animate-popup-out {
     animation: popup-out 0.2s ease-in forwards;
 }
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar-corner {
+    background: none;
+}
