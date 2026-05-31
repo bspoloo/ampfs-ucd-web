@@ -15,6 +15,7 @@ export default function ChampionshipDetail() {
 
     const {
         championship,
+        audits,
         loading,
         error,
         status,
@@ -84,6 +85,48 @@ export default function ChampionshipDetail() {
             </div>
 
             <Categories />
+
+            <div className="p-6 mt-6 bg-(--bg-sidebar)/40 border border-white/5 rounded-lg mx-6">
+                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <span className="w-1.5 h-6 bg-[#b11212] rounded-full inline-block" />
+                    Registro de Auditoría de Estados (Control SoA A.8.15)
+                </h3>
+                
+                {audits && audits.length > 0 ? (
+                    <div className="relative border-l border-white/10 pl-6 space-y-6">
+                        {audits.map((audit: any) => (
+                            <div key={audit.id} className="relative group">
+                                {/* Dot indicator */}
+                                <div className="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full border-2 border-[#b11212] bg-[#0e0e0e] group-hover:scale-110 transition-transform duration-200" />
+                                
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                    <div>
+                                        <p className="text-sm font-medium text-white/90">
+                                            Cambio de estado: <span className="text-white/40">{audit.oldState}</span> → <span className="text-green-400 font-semibold">{audit.newState}</span>
+                                        </p>
+                                        <p className="text-xs text-white/45 mt-1 flex flex-wrap gap-x-4">
+                                            <span>Por: <strong className="text-white/70">{audit.user?.fullname || audit.user?.username || 'Sistema'}</strong></span>
+                                            <span>IP: <code className="text-white/60">{audit.ipAddress}</code></span>
+                                        </p>
+                                    </div>
+                                    <div className="text-xs text-white/35 whitespace-nowrap self-start sm:self-center">
+                                        {new Date(audit.createdAt).toLocaleString('es-ES', {
+                                            day: '2-digit',
+                                            month: '2-digit',
+                                            year: 'numeric',
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                            second: '2-digit'
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-sm text-white/40 italic">No se registran cambios de estado en este campeonato.</p>
+                )}
+            </div>
 
             <ConfirmModal
                 isOpen={isModalOpen}
