@@ -7,6 +7,7 @@ export default function ChampionshipsPage() {
         <div>
             <ChampionshipsHeader />
             <ChampionshipsList />
+            {/* added the page to fix */}
             <Pagination pages={3}/>
         </div>
     );
