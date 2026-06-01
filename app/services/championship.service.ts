@@ -63,3 +63,36 @@ export async function updateChampionshipState(
         );
     }
 }
+
+export async function getChampionshipAudits(
+    id: string,
+    token: string
+): Promise<any[]> {
+    try {
+        const API_BACKEND = process.env.BACKEND_API_URL;
+        const res = await fetch(
+            `${API_BACKEND}/championship/${id}/audit`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error(
+                "Error al obtener auditoría de campeonato"
+            );
+        }
+
+        return res.json();
+
+    } catch (e) {
+        const errorMessage = e instanceof Error ? e.message : String(e);
+        throw new Error(
+            `Error obteniendo auditoría: ${errorMessage}`
+        );
+    }
+}

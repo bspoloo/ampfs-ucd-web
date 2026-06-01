@@ -3,13 +3,14 @@
 import { useEffect, useState } from "react";
 import { reverseStateMap, stateMap, StatusFront } from "@/app/consts/champion-state";
 import { Championship } from "@/app/interfaces/championship.interface";
-import { getChampionship, updateChampionshipState } from "@/app/services/championship.service";
+import { getChampionship, updateChampionshipState, getChampionshipAudits } from "@/app/services/championship.service";
 import { useToast } from "@/app/hooks/use-toast";
 import { useSession } from "next-auth/react";
 
 export function useChampionshipDetail(id: string) {
     const {data: session, status: sessionStatus} = useSession();
     const [championship, setChampionship] = useState<Championship | null>(null);
+    const [audits, setAudits] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [status, setStatus] = useState<StatusFront | null>(null);
@@ -34,6 +35,12 @@ export function useChampionshipDetail(id: string) {
             const data = await getChampionship(id, session!.accessToken);
             setChampionship(data);
             setStatus(reverseStateMap[data.state]);
+            try {
+                const auditsData = await getChampionshipAudits(id, session!.accessToken);
+                setAudits(auditsData);
+            } catch (auditErr) {
+                console.error("Error loading audits:", auditErr);
+            }
         } catch (err) {
             const message =
                 err instanceof Error
@@ -80,6 +87,12 @@ export function useChampionshipDetail(id: string) {
                 "¡Estado actualizado!",
                 "success"
             );
+            try {
+                const auditsData = await getChampionshipAudits(id, session!.accessToken);
+                setAudits(auditsData);
+            } catch (auditErr) {
+                console.error("Error loading audits:", auditErr);
+            }
         } catch {
             if (championship) {
                 setStatus(
@@ -99,6 +112,7 @@ export function useChampionshipDetail(id: string) {
 
     return {
         championship,
+        audits,
         loading,
         error,
         status,
